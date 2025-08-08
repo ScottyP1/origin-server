@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import getUserRepo, AddRepoToUser
+from .views import getTrackedRepos, getAllRepos, AddRepoToUser
 
 urlpatterns = [
-    path('', getUserRepo.as_view(), name='user-repos'),
-    path('add/', AddRepoToUser.as_view(), name='add-repo')
+    path('', getTrackedRepos.as_view(), name='user_repos'),
+    path("all/", getAllRepos.as_view(), name='all_user_repos'),
+    path('add/', AddRepoToUser.as_view(), name='add_repo')
 ]

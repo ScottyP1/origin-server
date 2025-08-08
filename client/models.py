@@ -7,4 +7,6 @@ class Client(AbstractUser):
     full_name = models.CharField(max_length=255, blank=True, null=True)
     followers = models.IntegerField(blank=True, null=True)
     following = models.IntegerField(blank=True, null=True)
+    total_repos = models.IntegerField(blank=True, null=True)
+    
     REQUIRED_FIELDS = []
