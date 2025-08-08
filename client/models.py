@@ -2,11 +2,16 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class Client(AbstractUser):
-    github_access = models.CharField(max_length=255, blank=True, null=True)
+    email = models.EmailField(unique=True)
+
+    username = models.CharField(max_length=150, blank=True, null=True, unique=False)
+
     avatar_url = models.URLField(max_length=500, blank=True, null=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
-    followers = models.IntegerField(blank=True, null=True)
-    following = models.IntegerField(blank=True, null=True)
-    total_repos = models.IntegerField(blank=True, null=True)
+    followers = models.IntegerField(default=0)
+    following = models.IntegerField(default=0)
+    total_repos = models.IntegerField(default=0)
+    github_url = models.CharField(null=True, blank=True)
     
-    REQUIRED_FIELDS = []
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = [] 

@@ -22,16 +22,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'rest_framework.authtoken',
-
-    'dj_rest_auth',
-
+    'rest_framework_simplejwt',             
+    'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
 
     'client',
     'repo',
     'repoActivity',
-    'notifications'
+    'notifications',
+    'socialAccounts'
 ]
 
 MIDDLEWARE = [
@@ -97,5 +96,12 @@ REST_USE_JWT = True
 
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'client.serializers.UserSerializer',
+}
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "AUTH_HEADER_TYPES": ("Bearer",),  # <-- make sure it's Bearer
 }
 

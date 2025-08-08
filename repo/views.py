@@ -5,7 +5,8 @@ import rest_framework.status as s
 from .models import Repo
 from .serializers import RepoSerializer
 import requests
-from django.shortcuts import get_list_or_404
+from notifications.models import Notifications
+from socialAccounts.models import SocialAccount
 
 class getTrackedRepos(APIView):
     permission_classes = [IsAuthenticated]
@@ -22,8 +23,13 @@ class getAllRepos(APIView):
 
     def get(self, request):
         client= request.user
-        access_token = client.github_access
-        
+        account = SocialAccount.objects.filter(user=request.user, provider="github").first()
+        if not account:
+            return Response({"error": "No GitHub account connected"}, status=400)
+
+        access_token = account.access_token
+
+                
         headers = {"Authorization": f"Bearer {access_token}", "Accept": "application/vnd.github+json"}
         github_res = requests.get("https://api.github.com/user/repos?type=owner&per_page=100&page=1", headers=headers)
         github_data = github_res.json()
@@ -44,7 +50,12 @@ class AddRepoToUser(APIView):
     def post(self, request):
         user = request.user
         repo_data = request.data
-        access_token = user.github_access
+        
+        account = SocialAccount.objects.filter(user=user, provider="github").first()
+        if not account:
+            return Response({"error": "No GitHub account connected"}, status=400)
+
+        access_token = account.access_token
         
         repo_name = repo_data["name"]
         
@@ -79,4 +90,9 @@ class AddRepoToUser(APIView):
         repo.url = repo_data.get("url", "")
         
         repo.save()
+        notifications, created = Notifications.objects.get_or_create(repo=repo)
+        print(f"Notifications for repo {repo}: {notifications}")
+
+        print(f"Notifications for repo {repo.name}: {notifications}")
+
         return Response(RepoSerializer(repo).data, status=s.HTTP_200_OK)

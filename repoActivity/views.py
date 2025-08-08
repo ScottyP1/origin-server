@@ -6,7 +6,7 @@ from .serializers import RepoActivitySerializer
 import rest_framework.status as s
 from repo.models import Repo    
 import requests
-from datetime import datetime
+from socialAccounts.models import SocialAccount
 
 class RecentActivityView(APIView):
     permission_classes = [IsAuthenticated]
@@ -14,14 +14,6 @@ class RecentActivityView(APIView):
     def get(self, request):
         activities = RepoActivity.objects.filter(repo__client=request.user).order_by('-created_at')[:25]
         return Response(RepoActivitySerializer(activities, many=True).data, status=s.HTTP_200_OK)
-
-
-# class RepoActivityView(APIView):
-#     permission_classes = [IsAuthenticated]
-
-#     def get(self, request, id):
-#         activities = RepoActivity.objects.filter(id=id, repo__client=request.user).order_by('-created_at')[:25]
-#         return Response(RepoActivitySerializer(activities, many=True).data, status=s.HTTP_200_OK)
     
     
 class SyncAllTrackedReposView(APIView):
@@ -29,7 +21,12 @@ class SyncAllTrackedReposView(APIView):
 
     def get(self, request):
         client = request.user
-        access_token = client.github_access
+        account = SocialAccount.objects.filter(user=client, provider="github").first()
+        if not account:
+            return Response({"error": "No GitHub account connected"}, status=400)
+
+        access_token = account.access_token
+        
         headers = {"Authorization": f"Bearer {access_token}"}
 
         repos = Repo.objects.filter(client=client)
