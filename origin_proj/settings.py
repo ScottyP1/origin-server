@@ -1,4 +1,3 @@
-# settings.py
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
@@ -12,18 +11,20 @@ DEBUG = config("DEBUG", cast=bool, default=False)
 RAILWAY_HOST = config("RAILWAY_HOST", default="origin-api.up.railway.app")
 AUTH_USER_MODEL = "client.Client"
 
+WSGI_APPLICATION = "origin_proj.wsgi.application"
+ROOT_URLCONF = "origin_proj.urls" 
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.vercel.app",
+    "https://origin-server-production.up.railway.app",
+]
+
 ALLOWED_HOSTS = [
-    RAILWAY_HOST,
+    "origin-server-production.up.railway.app",
+    ".up.railway.app",   # <- allows any Railway subdomain (handy if domain regenerates)
     "localhost",
     "127.0.0.1",
 ]
-WSGI_APPLICATION = "origin_proj.wsgi.application"
-ROOT_URLCONF = "origin_proj.urls" 
-CSRF_TRUSTED_ORIGINS = [
-    "https://*.vercel.app",
-    f"https://{RAILWAY_HOST}",
-]
-
 INSTALLED_APPS = [
     # Django
     "django.contrib.admin",
@@ -75,11 +76,9 @@ TEMPLATES = [
 ]
 
 
-# CORS: allow only your frontend(s)
 CORS_ALLOWED_ORIGINS = [
     "https://origin-client-jade.vercel.app",
 ]
-# If you also want preview branches:
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https:\/\/.*\.vercel\.app$",
 ]
