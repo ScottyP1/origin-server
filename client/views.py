@@ -71,7 +71,6 @@ class RemoveSocial(APIView):
 
 class RegisterSendCode(APIView):
     def post(self, request):
-        print(request.data)
         email = request.data.get("email", "").lower()
         try:
             EmailValidator()(email)

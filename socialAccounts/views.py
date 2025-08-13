@@ -1,7 +1,4 @@
-# social/views.py
-
 import requests
-from django.conf import settings
 from rest_framework import status as s
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -10,6 +7,7 @@ from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 from client.serializers import UserSerializer  
 from .models import SocialAccount           
+from decouple import config
 
 User = get_user_model()
 
@@ -25,8 +23,8 @@ class GitHubConnectView(APIView):
             "https://github.com/login/oauth/access_token",
             headers={"Accept": "application/json"},
             data={
-                    "client_id": settings.GITHUB_CLIENT_ID,
-                    "client_secret": settings.GITHUB_CLIENT_SECRET,
+                    "client_id": config("GITHUB_CLIENT_ID"),
+                    "client_secret": config("GITHUB_CLIENT_SECRET"),
                     "code": code,
                 })
             
