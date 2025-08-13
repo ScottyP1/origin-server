@@ -15,7 +15,7 @@ WSGI_APPLICATION = "origin_proj.wsgi.application"
 ROOT_URLCONF = "origin_proj.urls" 
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.vercel.app",
+    "https://www.origin.services/",
     "https://origin-server-production.up.railway.app",
 ]
 
