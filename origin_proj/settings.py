@@ -9,7 +9,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", cast=bool, default=False)
 
-# replace with your real Railway host, e.g. "origin-api.up.railway.app"
 RAILWAY_HOST = config("RAILWAY_HOST", default="origin-api.up.railway.app")
 
 ALLOWED_HOSTS = [
@@ -17,7 +16,8 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
 ]
-
+WSGI_APPLICATION = "origin_proj.wsgi.application"
+ROOT_URLCONF = "origin_proj.urls" 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.vercel.app",
     f"https://{RAILWAY_HOST}",
