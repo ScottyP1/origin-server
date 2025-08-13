@@ -78,13 +78,14 @@ TEMPLATES = [
 
 
 CORS_ALLOWED_ORIGINS = [
-    "https://origin-client-jade.vercel.app",
+    "https://www.origin.services",
+    "https://origin.services",
 ]
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https:\/\/.*\.vercel\.app$",
 ]
 
-CORS_ALLOW_CREDENTIALS = False  # using JWT in Authorization header
+CORS_ALLOW_CREDENTIALS = False 
 
 DATABASES = {
     "default": dj_database_url.config(
