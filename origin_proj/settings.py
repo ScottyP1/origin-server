@@ -10,6 +10,7 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", cast=bool, default=False)
 
 RAILWAY_HOST = config("RAILWAY_HOST", default="origin-api.up.railway.app")
+AUTH_USER_MODEL = "client.Client"
 
 ALLOWED_HOSTS = [
     RAILWAY_HOST,
@@ -56,6 +57,23 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [], 
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
+
 
 # CORS: allow only your frontend(s)
 CORS_ALLOWED_ORIGINS = [
