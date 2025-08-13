@@ -71,23 +71,18 @@ class RemoveSocial(APIView):
 
 class RegisterSendCode(APIView):
     def post(self, request):
+        print(request.data)
         email = request.data.get("email", "").lower()
-
-        # 1. Validate email format
         try:
             EmailValidator()(email)
         except ValidationError:
             return Response({"error": "Invalid email address"}, status=s.HTTP_400_BAD_REQUEST)
-
-        # 2. Check if user already exists
         if User.objects.filter(email=email).exists():
             return Response({"error": "Email is already registered"}, status=s.HTTP_400_BAD_REQUEST)
 
-        # 3. Generate and store code
         code = f"{random.randint(100000, 999999)}"
-        cache.set(f"verify:{email}", code, timeout=600)  # store for 10 minutes
+        cache.set(f"verify:{email}", code, timeout=600)  
 
-        # 4. Send email using Mailgun API
         try:
             response = requests.post(
                 f"https://api.mailgun.net/v3/{MAILGUN_DOMAIN}/messages",
