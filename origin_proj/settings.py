@@ -16,12 +16,13 @@ ROOT_URLCONF = "origin_proj.urls"
 
 CSRF_TRUSTED_ORIGINS = [
     "https://www.origin.services/",
+    "https://origin.services", 
     "https://origin-server-production.up.railway.app",
 ]
 
 ALLOWED_HOSTS = [
     "origin-server-production.up.railway.app",
-    ".up.railway.app",   # <- allows any Railway subdomain (handy if domain regenerates)
+    ".up.railway.app", 
     "localhost",
     "127.0.0.1",
 ]
