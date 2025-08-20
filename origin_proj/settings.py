@@ -14,13 +14,6 @@ AUTH_USER_MODEL = "client.Client"
 WSGI_APPLICATION = "origin_proj.wsgi.application"
 ROOT_URLCONF = "origin_proj.urls" 
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://www.origin.services",
-    "https://origin.services", 
-    "https://origin-server-production.up.railway.app",
-    "http://localhost:5173"
-]
-
 ALLOWED_HOSTS = [
     "origin-server-production.up.railway.app",
     ".up.railway.app", 
@@ -84,15 +77,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 
 ]
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https:\/\/.*\.vercel\.app$",
-]
-
-CORS_ALLOW_CREDENTIALS = False 
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=config("DATABASE_URL"),  # set in Railway: ${{ Postgres.DATABASE_URL }}
+        default=config("DATABASE_URL"),
         conn_max_age=600,
         ssl_require=True,
     )
@@ -101,12 +89,6 @@ DATABASES = {
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Security (only force in production)
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-SECURE_SSL_REDIRECT = not DEBUG
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
-
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -114,7 +96,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
