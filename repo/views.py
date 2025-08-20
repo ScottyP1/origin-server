@@ -50,8 +50,7 @@ class getTrackedRepos(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        client = request.user
-        repos = Repo.objects.filter(client=client)
+        repos = request.user.repos.all()
         return Response(RepoSerializer(repos, many=True).data, status=s.HTTP_200_OK)
 
     def delete(self, request, id):
@@ -83,8 +82,6 @@ class getAllRepos(APIView):
             for r in github_data
             if r.get("id") not in tracked_ids
         ]
-
-        # Return plain dicts; do NOT wrap in ModelSerializer
         return Response(untracked, status=s.HTTP_200_OK)
 
 

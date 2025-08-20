@@ -93,7 +93,6 @@ class RegisterSendCode(APIView):
                     "text": f"Your verification code is: {code}\nThis code will expire in 10 minutes.",
                 }
             )
-            response.raise_for_status()
             
         except requests.RequestException as e:
             return Response({"error": f"Failed to send email: {str(e)}"}, status=s.HTTP_500_INTERNAL_SERVER_ERROR)

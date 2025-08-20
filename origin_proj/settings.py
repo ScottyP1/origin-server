@@ -18,12 +18,13 @@ CSRF_TRUSTED_ORIGINS = [
     "https://www.origin.services",
     "https://origin.services", 
     "https://origin-server-production.up.railway.app",
+    "http://localhost:5173"
 ]
 
 ALLOWED_HOSTS = [
     "origin-server-production.up.railway.app",
     ".up.railway.app", 
-    "localhost",
+    "http://localhost:5173",
     "127.0.0.1",
 ]
 INSTALLED_APPS = [
